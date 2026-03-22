@@ -1,13 +1,14 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
+import type { AppointmentStatus } from "@prisma/client";
 import { prisma } from "../prisma";
-import { AppointmentStatus } from "@prisma/client";
 
 function transformAppointment(appointment: any) {
   return {
     ...appointment,
-    patientName: `${appointment.user.firstName || ""} ${appointment.user.lastName || ""}`.trim(),
+    patientName:
+      `${appointment.user.firstName || ""} ${appointment.user.lastName || ""}`.trim(),
     patientEmail: appointment.user.email,
     doctorName: appointment.doctor.name,
     doctorImageUrl: appointment.doctor.imageUrl || "",
@@ -46,7 +47,10 @@ export async function getUserAppointments() {
 
     // find user by clerkId from authenticated session
     const user = await prisma.user.findUnique({ where: { clerkId: userId } });
-    if (!user) throw new Error("User not found. Please ensure your account is properly set up.");
+    if (!user)
+      throw new Error(
+        "User not found. Please ensure your account is properly set up.",
+      );
 
     const appointments = await prisma.appointment.findMany({
       where: { userId: user.id },
@@ -126,14 +130,18 @@ interface BookAppointmentInput {
 export async function bookAppointment(input: BookAppointmentInput) {
   try {
     const { userId } = await auth();
-    if (!userId) throw new Error("You must be logged in to book an appointment");
+    if (!userId)
+      throw new Error("You must be logged in to book an appointment");
 
     if (!input.doctorId || !input.date || !input.time) {
       throw new Error("Doctor, date, and time are required");
     }
 
     const user = await prisma.user.findUnique({ where: { clerkId: userId } });
-    if (!user) throw new Error("User not found. Please ensure your account is properly set up.");
+    if (!user)
+      throw new Error(
+        "User not found. Please ensure your account is properly set up.",
+      );
 
     const appointment = await prisma.appointment.create({
       data: {
@@ -163,7 +171,10 @@ export async function bookAppointment(input: BookAppointmentInput) {
   }
 }
 
-export async function updateAppointmentStatus(input: { id: string; status: AppointmentStatus }) {
+export async function updateAppointmentStatus(input: {
+  id: string;
+  status: AppointmentStatus;
+}) {
   try {
     const appointment = await prisma.appointment.update({
       where: { id: input.id },

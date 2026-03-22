@@ -2,7 +2,14 @@
 
 import { CheckIcon, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function CustomPricingTable() {
   const plans = [
@@ -61,7 +68,9 @@ export function CustomPricingTable() {
         <Card
           key={plan.name}
           className={`relative border-2 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 ${
-            plan.popular ? "border-primary shadow-lg scale-105 z-10" : "border-border/50 hover:border-primary/30"
+            plan.popular
+              ? "border-primary shadow-lg scale-105 z-10"
+              : "border-border/50 hover:border-primary/30"
           }`}
         >
           {plan.popular && (
@@ -81,7 +90,11 @@ export function CustomPricingTable() {
           <CardContent className="space-y-6">
             <div className="text-center">
               <span className="text-4xl font-black">{plan.price}</span>
-              {plan.period && <span className="text-muted-foreground ml-1 font-medium">{plan.period}</span>}
+              {plan.period && (
+                <span className="text-muted-foreground ml-1 font-medium">
+                  {plan.period}
+                </span>
+              )}
             </div>
 
             <div className="space-y-3">
@@ -90,7 +103,9 @@ export function CustomPricingTable() {
                   <div className="mt-1 bg-primary/10 rounded-full p-0.5">
                     <CheckIcon className="w-3.5 h-3.5 text-primary" />
                   </div>
-                  <span className="text-foreground/80 leading-tight">{feature}</span>
+                  <span className="text-foreground/80 leading-tight">
+                    {feature}
+                  </span>
                 </div>
               ))}
             </div>
@@ -99,8 +114,8 @@ export function CustomPricingTable() {
           <CardFooter className="pt-2">
             <Button
               className={`w-full h-12 rounded-xl font-bold transition-all ${
-                plan.popular 
-                  ? "bg-gradient-to-r from-primary to-primary/80 hover:scale-[1.02]" 
+                plan.popular
+                  ? "bg-gradient-to-r from-primary to-primary/80 hover:scale-[1.02]"
                   : "hover:bg-primary/5"
               }`}
               variant={plan.buttonVariant}
